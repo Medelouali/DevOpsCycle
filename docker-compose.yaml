@@ -9,3 +9,9 @@ services:
       - MYSQL_DATABASE=boa
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - devopscycle-network
+
+networks:
+  devopscycle-network:
+    driver: bridge
