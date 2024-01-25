@@ -1,5 +1,6 @@
-# Use an official OpenJDK runtime as a parent image
-FROM khipu/openjdk17-alpine
+# FROM maven:3.8.2-jdk-8 # for Java 8
+FROM maven:3.8.5-openjdk-17
+
 
 # Set the working directory in the container
 WORKDIR /app
@@ -12,3 +13,4 @@ EXPOSE 8080
 
 # Specify the command to run on container startup
 CMD ["java", "-jar", "app.jar"]
+
