@@ -9,11 +9,17 @@ pipeline {
     }
     
     stages {
-        stage("Git Checkout") {
-            steps {
-                git credentialsId: 'github', url: 'https://github.com/DevOpsTestOrgAi/DevOpsCycle'
-                echo 'Git Checkout Completed'
-            }
+        stage('Checkout Source Code') {
+                        steps {
+                            script {
+        //                         deleteDir() // Optional: clean workspace before checkout
+                                checkout([$class: 'GitSCM',
+                                          branches: [[name: 'main']],
+                                          doGenerateSubmoduleConfigurations: false,
+                                          extensions: [[$class: 'CleanBeforeCheckout']],
+                                          userRemoteConfigs: [[url: 'https://github.com/DevOpsTestOrgAi/DevOpsCycle.git']]])
+                            }
+                        }
         }
 
         stage('Unit Test') {
