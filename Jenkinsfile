@@ -13,12 +13,18 @@ pipeline {
     }
     
     stages {
-        stage('Cloning Git') {
-              steps {
-                git([url: 'https://github.com/DevOpsTestOrgAi/DevOpsCycle.git', branch: 'main', credentialsId: 'dckr_pat_neDIl-qYI_FitaxBN3PIcc4Z_GM'])
-              }
-        }
-
+        stage('Checkout Source Code') {
+                        steps {
+                            script {
+        //                         deleteDir() // Optional: clean workspace before checkout
+                                checkout([$class: 'GitSCM',
+                                          branches: [[name: 'main']],
+                                          doGenerateSubmoduleConfigurations: false,
+                                          extensions: [[$class: 'CleanBeforeCheckout']],
+                                          userRemoteConfigs: [[url: 'https://github.com/DevOpsTestOrgAi/DevOpsCycle.git']]])
+                            }
+                        }
+                    }
         stage('Unit Test') {
             steps {
                 // Run unit tests using Maven
@@ -40,17 +46,28 @@ pipeline {
                 }
               }
         }
+       stage('Build and Push Docker Image') {
+           environment {
+               DOCKER_IMAGE = "medelouali/devopscycle-image:2.${BUILD_ID}"
+               DOCKERFILE_LOCATION = "."
+           }
+           steps {
+               script {
+                   // Build Docker image
+                   sh "docker build -t ${DOCKER_IMAGE} ."
 
-        stage('Deploy Image') {
-              steps{
-                script {
-                  docker.withRegistry( '', registryCredential ) {
-                    dockerImage.push("$BUILD_NUMBER")
-                     dockerImage.push('latest')
-                  }
-                }
-              }
-        }
+                   // Authenticate with Docker registry and push image using token
+                   withCredentials([string(credentialsId: 'dockerhub-token', variable: 'dckr_pat_neDIl-qYI_FitaxBN3PIcc4Z_GM')]) {
+                       sh "echo ${DOCKER_HUB_TOKEN} | docker login -u _json_key --password-stdin https://index.docker.io/v1/"
+                       sh "docker push ${DOCKER_IMAGE}"
+                   }
+
+                   // Remove Docker image
+                   sh "docker rmi -f ${DOCKER_IMAGE}"
+               }
+           }
+       }
+
     }
 
     post {
