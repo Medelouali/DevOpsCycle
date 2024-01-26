@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         // Define environment variables
-        DOCKER_HUB_CREDENTIALS = credentials('dckr_pat_7f19tOClkKr5QQIsRF6U6Bf36Us')
+        DOCKER_HUB_CREDENTIALS = credentials('dckr_pat_neDIl-qYI_FitaxBN3PIcc4Z_GM')
         DOCKER_IMAGE_NAME = 'medelouali/devopscycle-image'
         MAVEN_HOME = tool 'Maven'
     }
