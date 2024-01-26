@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         // Define environment variables
-        DOCKER_HUB_CREDENTIALS = credentials('dckr_pat_neDIl-qYI_FitaxBN3PIcc4Z_GM')
+        //DOCKER_HUB_CREDENTIALS = credentials('dckr_pat_neDIl-qYI_FitaxBN3PIcc4Z_GM')
         DOCKER_IMAGE_NAME = 'medelouali/devopscycle-image'
         MAVEN_HOME = tool 'Maven'
 
@@ -14,17 +14,17 @@ pipeline {
     
     stages {
         stage('Checkout Source Code') {
-                        steps {
-                            script {
-        //                         deleteDir() // Optional: clean workspace before checkout
-                                checkout([$class: 'GitSCM',
-                                          branches: [[name: 'main']],
-                                          doGenerateSubmoduleConfigurations: false,
-                                          extensions: [[$class: 'CleanBeforeCheckout']],
-                                          userRemoteConfigs: [[url: 'https://github.com/DevOpsTestOrgAi/DevOpsCycle.git']]])
-                            }
-                        }
-                    }
+            steps {
+                script {
+                    deleteDir()
+                        checkout([$class: 'GitSCM',
+                        branches: [[name: 'main']],
+                        doGenerateSubmoduleConfigurations: false,
+                        extensions: [[$class: 'CleanBeforeCheckout']],
+                        userRemoteConfigs: [[url: 'https://github.com/DevOpsTestOrgAi/DevOpsCycle.git']]])
+                }
+            }
+        }
         stage('Unit Test') {
             steps {
                 // Run unit tests using Maven
