@@ -3,18 +3,18 @@ pipeline {
     
     environment {
         // Define environment variables
-        DOCKER_HUB_CREDENTIALS = credentials('dockeriscool@@')
+        DOCKER_HUB_CREDENTIALS = credentials('dckr_pat_7f19tOClkKr5QQIsRF6U6Bf36Us')
         DOCKER_IMAGE_NAME = 'medelouali/devopscycle-image'
         MAVEN_HOME = tool 'Maven'
     }
     
     stages {
-        stage('Checkout') {
-            steps {
-                // Checkout source code from version control
-                git 'https://github.com/DevOpsTestOrgAi/DevOpsCycle'
-            }
-        }
+        stage("Git Checkout"){  
+    		steps{     
+			git credentialsId: 'github', url: 'https://github.com/DevOpsTestOrgAi/DevOpsCycle'
+			echo 'Git Checkout Completed'   
+    		}
+	}
         
         stage('Unit Test') {
             steps {
@@ -30,26 +30,27 @@ pipeline {
             }
         }
         
-        stage('Dockerize') {
-            steps {
-                // Build Docker image
-                script {
-                    docker.build "${DOCKER_IMAGE_NAME}:${BUILD_ID}"
-                }
-            }
-        }
+        stage('Dockerize') {  
+    		steps{                     
+			sh 'sudo docker build -t medelouali/devopscycle-image:		$BUILD_NUMBER .'     
+			echo 'Build Image Completed'                
+    		}           
+	} 
+    
         
-        stage('Push to Docker Hub') {
-            steps {
-                // Push Docker image to Docker Hub
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_HUB_CREDENTIALS) {
-                        dockerImage.push("BUILD_ID")
-                    }
-                }
-            }
-        }
-    }
+        stage('Login to Docker Hub') {      	
+    		steps{                       	
+			sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                		
+			echo 'Login Completed'      
+    		}           
+	}   
+	
+	stage('Push Image to Docker Hub') {         
+    		steps{                            
+ 			sh 'sudo docker push medelouali/devopscycle-image:$BUILD_NUMBER'           
+			echo 'Push Image Completed'       
+    	}            
+}  
     
     post {
         success {
