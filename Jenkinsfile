@@ -14,7 +14,6 @@ pipeline {
 			git credentialsId: 'github', url: 'https://github.com/DevOpsTestOrgAi/DevOpsCycle'
 			echo 'Git Checkout Completed'   
     		}
-	}
         
         stage('Unit Test') {
             steps {
@@ -34,8 +33,8 @@ pipeline {
     		steps{                     
 			sh 'sudo docker build -t medelouali/devopscycle-image:		$BUILD_NUMBER .'     
 			echo 'Build Image Completed'                
-    		}           
-	} 
+    		}
+    	}
     
         
         stage('Login to Docker Hub') {      	
@@ -43,14 +42,15 @@ pipeline {
 			sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                		
 			echo 'Login Completed'      
     		}           
-	}   
+	    }
 	
-	stage('Push Image to Docker Hub') {         
+	    stage('Push Image to Docker Hub') {
     		steps{                            
  			sh 'sudo docker push medelouali/devopscycle-image:$BUILD_NUMBER'           
 			echo 'Push Image Completed'       
-    	}            
-}  
+    	    }
+        }
+    }
     
     post {
         success {

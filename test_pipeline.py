@@ -1,5 +1,5 @@
 
-print("       Helloo my awesome pipeline       ");
+print("       Hello my awesome pipeline       ")
 print("       *****       ")
 print("    ***********    ")
 print("  ****     ****   ")
