@@ -6,20 +6,17 @@ pipeline {
         DOCKER_HUB_CREDENTIALS = credentials('dckr_pat_neDIl-qYI_FitaxBN3PIcc4Z_GM')
         DOCKER_IMAGE_NAME = 'medelouali/devopscycle-image'
         MAVEN_HOME = tool 'Maven'
+
+        imageName = "medelouali/devopscycle-image"
+        registryCredential = 'medelouali-dockerhub'
+        dockerImage = ''
     }
     
     stages {
-        stage('Checkout Source Code') {
-                        steps {
-                            script {
-        //                         deleteDir() // Optional: clean workspace before checkout
-                                checkout([$class: 'GitSCM',
-                                          branches: [[name: 'main']],
-                                          doGenerateSubmoduleConfigurations: false,
-                                          extensions: [[$class: 'CleanBeforeCheckout']],
-                                          userRemoteConfigs: [[url: 'https://github.com/DevOpsTestOrgAi/DevOpsCycle.git']]])
-                            }
-                        }
+        stage('Cloning Git') {
+              steps {
+                git([url: 'https://github.com/DevOpsTestOrgAi/DevOpsCycle.git', branch: 'main', credentialsId: 'dckr_pat_neDIl-qYI_FitaxBN3PIcc4Z_GM'])
+              }
         }
 
         stage('Unit Test') {
@@ -36,26 +33,23 @@ pipeline {
             }
         }
 
-        stage('Dockerize') {
-            steps {
-                sh "sudo docker build -t ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER} ."
-                echo 'Build Image Completed'
-            }
+        stage('Building image') {
+              steps{
+                script {
+                  dockerImage = docker.build imageName
+                }
+              }
         }
 
-
-        stage('Login to Docker Hub') {
-            steps {
-                sh "echo ${DOCKER_HUB_CREDENTIALS_PSW} | sudo docker login -u ${DOCKER_HUB_CREDENTIALS_USR} --password-stdin"
-                echo 'Login Completed'
-            }
-        }
-
-        stage('Push Image to Docker Hub') {
-            steps {
-                sh "sudo docker push ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
-                echo 'Push Image Completed'
-            }
+        stage('Deploy Image') {
+              steps{
+                script {
+                  docker.withRegistry( '', registryCredential ) {
+                    dockerImage.push("$BUILD_NUMBER")
+                     dockerImage.push('latest')
+                  }
+                }
+              }
         }
     }
 
