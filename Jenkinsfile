@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent docker-agent-alpine-maven
     
     environment {
         // Define environment variables
