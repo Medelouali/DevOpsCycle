@@ -3,11 +3,15 @@ pipeline {
         label 'docker-maven-agent'
     }
     
+    tools{
+    	maven "maven_3_9_6"
+    }
+    
     environment {
         // Define environment variables
         //DOCKER_HUB_CREDENTIALS = credentials('dckr_pat_neDIl-qYI_FitaxBN3PIcc4Z_GM')
         DOCKER_IMAGE_NAME = 'medelouali/devopscycle-image'
-        MAVEN_HOME = tool 'Maven'
+  
 
         imageName = "medelouali/devopscycle-image"
         registryCredential = 'medelouali-dockerhub'
@@ -30,14 +34,14 @@ pipeline {
         stage('Unit Test') {
             steps {
                 // Run unit tests using Maven
-                sh "${MAVEN_HOME}/bin/mvn test"
+                sh "mvn test"
             }
         }
 
         stage('Build') {
             steps {
                 // Build the Spring Boot application using Maven
-                sh "${MAVEN_HOME}/bin/mvn clean package"
+                sh "mvn clean package"
             }
         }
 
