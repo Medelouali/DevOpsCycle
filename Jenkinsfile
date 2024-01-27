@@ -1,10 +1,8 @@
 pipeline {
-    agent {
-        label 'docker-maven-agent'
-    }
+    agent any
     
     tools{
-    	Maven "3.9.6"
+    	maven "maven_3_9_6"
     }
     
     environment {
