@@ -30,14 +30,12 @@ pipeline {
                 }
             }
         }
-        /*
         stage('Unit Test') {
             steps {
                 // Ruun unit tests using Maven
                 sh "mvn test"
             }
         }
-        */
 
         stage('Build') {
             steps {
