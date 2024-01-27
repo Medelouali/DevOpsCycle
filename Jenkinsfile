@@ -1,8 +1,6 @@
 pipeline {
     agent {
-        docker {
-            image 'jenkins/agent:alpine-jdk17'
-        }
+        label 'docker-agent-alpine-maven'
     }
     
     environment {
