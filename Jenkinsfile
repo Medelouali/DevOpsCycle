@@ -33,7 +33,7 @@ pipeline {
         /*
         stage('Unit Test') {
             steps {
-                // Ruun unit tests using Maven
+                // Run unit tests using Maven
                 sh "mvn test"
             }
         }
