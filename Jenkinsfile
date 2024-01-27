@@ -1,5 +1,9 @@
 pipeline {
-    agent docker-agent-alpine-maven
+    agent {
+        docker {
+            image 'jenkins/agent:alpine-jdk17'
+        }
+    }
     
     environment {
         // Define environment variables
