@@ -1,13 +1,9 @@
 pipeline {
-    agent{
-    	docker {
-            // Specify the Docker image to use
-            image 'docker'
-        }
-    }
+    agent any
     
     tools{
     	maven "maven"
+    	dockerTool 'docker'
     }
     
     environment {
