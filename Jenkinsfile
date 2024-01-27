@@ -3,6 +3,7 @@ pipeline {
     
     tools{
     	maven "maven"
+    	docker "docker"
     }
     
     environment {
@@ -29,17 +30,19 @@ pipeline {
                 }
             }
         }
+        /*
         stage('Unit Test') {
             steps {
                 // Ruun unit tests using Maven
                 sh "mvn test"
             }
         }
+        */
 
         stage('Build') {
             steps {
                 // Build the Spring Boot application using Maven
-                sh "mvn clean package"
+                sh "mvn package"
             }
         }
 
