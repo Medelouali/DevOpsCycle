@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'docker-agent-alpine-maven'
+        label 'docker-maven-agent'
     }
     
     environment {
