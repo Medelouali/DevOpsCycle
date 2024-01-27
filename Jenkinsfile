@@ -42,17 +42,10 @@ pipeline {
         stage('Build') {
             steps {
                 // Build the Spring Boot application using Maven
-                sh "mvn package"
+                sh "mvn clean package"
             }
         }
 
-        stage('Building image') {
-              steps{
-                script {
-                  dockerImage = docker.build imageName
-                }
-              }
-        }
        stage('Build and Push Docker Image') {
            environment {
                DOCKER_IMAGE = "medelouali/devopscycle-image:2.${BUILD_ID}"
