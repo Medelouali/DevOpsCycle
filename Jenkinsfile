@@ -38,7 +38,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                // Build the Spring Boot application using Maven
+                // Buiild the Spring Boot application using Maven
                 sh "mvn package"
             }
         }
