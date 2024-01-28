@@ -3,14 +3,13 @@ pipeline {
     
     tools{
     	maven "maven"
-    	dockerTool 'docker'
     }
     
     environment {
         // Define environment variables
         //DOCKER_HUB_CREDENTIALS = credentials('dckr_pat_neDIl-qYI_FitaxBN3PIcc4Z_GM')
         DOCKER_IMAGE_NAME = 'medelouali/devopscycle-image'
-  
+
 
         imageName = "medelouali/devopscycle-image"
         registryCredential = 'medelouali-dockerhub'
@@ -32,7 +31,7 @@ pipeline {
         }
         stage('Unit Test') {
             steps {
-                // Ruun unit tests using Maven
+                // Run unit tests using Maven
                 sh "mvn clean test"
             }
         }
