@@ -1,6 +1,6 @@
 
 print("       Hello my awesome pipeline       ")
-print("      ******       ")
+print("      ********       ")
 print("    ************    ")
 print("  ****     ****   ")
 print(" ****       **** ")
