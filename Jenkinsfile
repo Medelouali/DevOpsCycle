@@ -45,7 +45,7 @@ pipeline {
 
        stage('Build Docker Image') {         
       steps{                
-	sh 'docker build -t medelouali/devopscycle-image:$BUILD_NUMBER .'           
+	sh 'docker build -t medelouali/devopscycle-image:1.$BUILD_NUMBER .'           
         echo 'Build Image Completed'                
       }           
     }
