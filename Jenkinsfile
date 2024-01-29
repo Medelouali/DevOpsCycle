@@ -59,7 +59,7 @@ pipeline {
                   
     stage('Push Image to Docker Hub') {         
       steps{                            
-	sh 'docker push medelouali/devopscycle-image:$BUILD_NUMBER'                 
+	sh 'docker push medelouali/devopscycle-image:1.$BUILD_NUMBER'                 
 	echo 'Push Image Completed'       
       }           
     } 
