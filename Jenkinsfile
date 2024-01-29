@@ -9,7 +9,7 @@ pipeline {
         // Define environment variables
         //DOCKER_HUB_CREDENTIALS = credentials('dckr_pat_neDIl-qYI_FitaxBN3PIcc4Z_GM')
         DOCKER_IMAGE_NAME = 'medelouali/devopscycle-image'
-	DOCKERHUB_CREDENTIALS= credentials('dckr_pat_neDIl-qYI_FitaxBN3PIcc4Z_GM') 
+	DOCKERHUB_CREDENTIALS= credentials('dockerhubcredentials') 
 
         imageName = "medelouali/devopscycle-image"
         registryCredential = 'medelouali-dockerhub'
