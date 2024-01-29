@@ -9,7 +9,7 @@ pipeline {
         // Define environment variables
         //DOCKER_HUB_CREDENTIALS = credentials('dckr_pat_neDIl-qYI_FitaxBN3PIcc4Z_GM')
         DOCKER_IMAGE_NAME = 'medelouali/devopscycle-image'
-
+	DOCKERHUB_CREDENTIALS= credentials('dckr_pat_neDIl-qYI_FitaxBN3PIcc4Z_GM') 
 
         imageName = "medelouali/devopscycle-image"
         registryCredential = 'medelouali-dockerhub'
@@ -43,27 +43,25 @@ pipeline {
             }
         }
 
-       stage('Build and Push Docker Image') {
-           environment {
-               DOCKER_IMAGE = "medelouali/devopscycle-image:2.${BUILD_ID}"
-               DOCKERFILE_LOCATION = "."
-           }
-           steps {
-               script {
-                   // Build Docker image
-                   sh "docker build -t ${DOCKER_IMAGE} ."
-
-                   // Authenticate with Docker registry and push image using token
-                   withCredentials([string(credentialsId: 'dockerhub-token', variable: 'dckr_pat_neDIl-qYI_FitaxBN3PIcc4Z_GM')]) {
-                       sh "echo ${DOCKER_HUB_TOKEN} | docker login -u _json_key --password-stdin https://index.docker.io/v1/"
-                       sh "docker push ${DOCKER_IMAGE}"
-                   }
-
-                   // Remove Docker image
-                   sh "docker rmi -f ${DOCKER_IMAGE}"
-               }
-           }
-       }
+       stage('Build Docker Image') {         
+      steps{                
+	sh 'sudo docker build -t medelouali/devopscycle-image:$BUILD_NUMBER .'           
+        echo 'Build Image Completed'                
+      }           
+    }
+    
+    stage('Login to Docker Hub') {         
+      steps{                            
+	sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                 
+	echo 'Login Completed'                
+      }           
+    } 
+                  
+    stage('Push Image to Docker Hub') {         
+      steps{                            
+	sh 'sudo docker push medelouali/devopscycle-image:$BUILD_NUMBER'                 echo 'Push Image Completed'       
+      }           
+    } 
 
     }
 
