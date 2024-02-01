@@ -70,7 +70,7 @@ class StudentServiceTest {
         // Then
         //studentService.addStudent(studentDto);
         assertThatThrownBy(()->studentService.addStudent(studentDto))
-                .isInstanceOf(BadRequestException.class)
+                .isInstanceOf(StudentAlreadyExistsException.class)
                 .hasMessageContaining("email has already been taken");
 
         verify(studentRepo, never()).save(any());
