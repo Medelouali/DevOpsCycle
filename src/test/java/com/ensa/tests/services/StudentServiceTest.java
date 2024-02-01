@@ -2,6 +2,8 @@ package com.ensa.tests.services;
 
 import com.ensa.tests.dtos.StudentDto;
 import com.ensa.tests.entities.Student;
+import com.ensa.tests.exceptions.NoSuchStudentException;
+import com.ensa.tests.exceptions.StudentAlreadyExistsException;
 import com.ensa.tests.repos.StudentRepo;
 import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +42,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void canAddStudent() throws BadRequestException {
+    void canAddStudent() throws StudentAlreadyExistsException {
         // Given
         StudentDto studentDto= StudentDto.builder()
                 .email("med@gmail.com").age(23).username("med")
