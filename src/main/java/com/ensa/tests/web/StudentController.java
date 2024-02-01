@@ -1,4 +1,4 @@
-package com.ensa.tests.controllers;
+package com.ensa.tests.web;
 
 import com.ensa.tests.dtos.StudentDto;
 import com.ensa.tests.entities.Student;
