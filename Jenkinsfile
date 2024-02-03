@@ -62,12 +62,12 @@ pipeline {
       }           
     } 
                   
-    stage('Push Image To Docker Hub') {         
-      steps{                            
-	sh 'docker push medelouali/devopscycle-image:1.$BUILD_NUMBER'                 
-	echo 'Push Image Completed'       
-      }           
-    }
+    //stage('Push Image To Docker Hub') {         
+    //  steps{                            	
+//	sh 'docker push medelouali/devopscycle-image:1.$BUILD_NUMBER'                 
+//	echo 'Push Image Completed'       
+  //    }           
+    //}
     
     stage('Update Manifests and Push to Git') {
             steps {
