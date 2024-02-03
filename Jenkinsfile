@@ -83,7 +83,7 @@ pipeline {
                     gitConfigure()
 
                     def manifestsDir = "${cloneDir}"
-                    def newImageLine = "image: devopscycle-image:${BUILD_NUMBER}"
+                    def newImageLine = "image: medelouali/devopscycle-image:${BUILD_NUMBER}"
 
                     echo "File content before sed:"
                     sh "cat ${manifestsDir}/app-deployment-manifest.yaml"
