@@ -86,12 +86,12 @@ pipeline {
                     def newImageLine = "image: devopscycle-image:${BUILD_NUMBER}"
 
                     echo "File content before sed:"
-                    sh "cat ${manifestsDir}/app-deployment-manifest.yml"
+                    sh "cat ${manifestsDir}/app-deployment-manifest.yaml"
 
-                    sh "sed -i 's|image: medelouali/devopscycle-image:latest.*|${newImageLine}|' ${manifestsDir}/app-deployment-manifest.yml || echo 'sed command failed'"
+                    sh "sed -i 's|image: medelouali/devopscycle-image:latest.*|${newImageLine}|' ${manifestsDir}/app-deployment-manifest.yaml || echo 'sed command failed'"
 
                     echo "File content after sed:"
-                    sh "cat ${manifestsDir}/app-deployment-manifest.yml"
+                    sh "cat ${manifestsDir}/app-deployment-manifest.yaml"
 
                     withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
                         dir(cloneDir) {
@@ -107,8 +107,7 @@ pipeline {
                     sh "rm -rf ${cloneDir}"
                 }
             }
-        }
-    } 
+        } 
 
     }
 
