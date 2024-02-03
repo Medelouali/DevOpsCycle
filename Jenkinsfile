@@ -100,7 +100,7 @@ pipeline {
                             sh "git status" // Print status again to verify changes
                             sh "git commit -m 'Update image tag in Kubernetes manifests'"
                             sh "git pull"
-                           sh "git push https://${GITHUB_TOKEN}@github.com:DevOpsTestOrgAi/DevOpsCycleGitOps.git HEAD:main" //ssa
+                           sh "git push https://${GITHUB_TOKEN}@github.com/DevOpsTestOrgAi/DevOpsCycleGitOps.git HEAD:main" //ssa
                         }
                     }
 
