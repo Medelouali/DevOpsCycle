@@ -70,44 +70,51 @@ pipeline {
     //}
     
     stage('Update Manifests and Push to Git') {
-            steps {
-                script {
-                    echo "Current directory: ${pwd()}"
-                    def cloneDir = 'DevOpsCycleGitOps'
-                     sh "rm -rf ${cloneDir}"
-                    if (!fileExists(cloneDir)) {
+    steps {
+        script {
+            echo "Current directory: ${pwd()}"
 
-                        sh "git clone git@github.com:DevOpsTestOrgAi/DevOpsCycleGitOps.git ${cloneDir}"
-                    }
+            def manifestsDir = 'DevOpsCycleGitOps'
 
-                    gitConfigure()
-
-                    def manifestsDir = "${cloneDir}"
-                    def newImageLine = "image: medelouali/devopscycle-image:${BUILD_NUMBER}"
-
-                    echo "File content before sed:"
-                    sh "cat ${manifestsDir}/app-deployment-manifest.yaml"
-
-                    sh "sed -i 's|image: medelouali/devopscycle-image:latest.*|${newImageLine}|' ${manifestsDir}/app-deployment-manifest.yaml || echo 'sed command failed'"
-
-                    echo "File content after sed:"
-                    sh "cat ${manifestsDir}/app-deployment-manifest.yaml"
-
-                    withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
-                        dir(cloneDir) {
-                            sh "git status"
-                            sh "git add ."
-                            sh "git status" // Print status again to verify changes
-                            sh "git commit -m 'Update image tag in Kubernetes manifests'"
-                            sh "git pull"
-                           sh "git push https://${GITHUB_TOKEN}@github.com/DevOpsTestOrgAi/DevOpsCycleGitOps.git HEAD:main" //ssa
-                        }
-                    }
-
-                    sh "rm -rf ${cloneDir}"
+            try {
+                if (!fileExists(manifestsDir)) {
+                    sh "git clone git@github.com:DevOpsTestOrgAi/DevOpsCycleGitOps.git ${manifestsDir}"
                 }
+
+                gitConfigure()
+
+                def newImageLine = "image: medelouali/devopscycle-image:${BUILD_NUMBER}"
+
+                echo "File content before sed:"
+                sh "cat ${manifestsDir}/app-deployment-manifest.yaml"
+
+                sh "sed -i 's|image: medelouali/devopscycle-image:latest.*|${newImageLine}|' ${manifestsDir}/app-deployment-manifest.yaml || echo 'sed command failed'"
+
+                echo "File content after sed:"
+                sh "cat ${manifestsDir}/app-deployment-manifest.yaml"
+
+                withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
+                    dir(manifestsDir) {
+                        sh "git fetch"  // Fetch latest changes
+                        sh "git status"
+                        sh "git add ."
+                        sh "git status" // Print status again to verify changes
+                        sh "git commit -m 'Update image tag in Kubernetes manifests'"
+                        sh "git pull origin main"  // Merge with main branch
+                        sh "git push https://${GITHUB_TOKEN}@github.com/DevOpsTestOrgAi/DevOpsCycleGitOps.git HEAD:main"
+                    }
+                }
+            } catch (Exception e) {
+                echo "Error occurred: ${e.message}"
+                currentBuild.result = 'FAILURE'  // Mark pipeline as failed
+            } finally {
+                // Optional: Clean up the cloned directory
+                sh "rm -rf ${manifestsDir}"
             }
-        } 
+        }
+    }
+}
+
 
     }
 
