@@ -1,5 +1,6 @@
 package com.ensa.tests.web;
 
+import com.ensa.tests.dtos.Response;
 import com.ensa.tests.dtos.StudentDto;
 import com.ensa.tests.entities.Student;
 import com.ensa.tests.exceptions.NoSuchStudentException;
@@ -8,6 +9,7 @@ import com.ensa.tests.services.StudentService;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,20 +24,14 @@ public class StudentController {
     // Method to add a student
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Student addStudent(@RequestBody StudentDto studentDto) throws StudentAlreadyExistsException {
-        // Add any validation or business logic here if needed
-//        Student student= Student.builder()
-//                .isActive(studentDto.getIsActive())
-//                .age(studentDto.getAge())
-//                .username(studentDto.getUsername())
-//                .build();
+    public ResponseEntity<Response<Student>> addStudent(@RequestBody StudentDto studentDto) throws StudentAlreadyExistsException {
         return studentService.addStudent(studentDto);
     }
 
     // Method to get a student by ID
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.CONTINUE)
-    public Optional<Student> getStudentById(@RequestParam("id") String id) throws NoSuchStudentException{
+    public ResponseEntity<Response<Student>> getStudentById(@RequestParam("id") String id) throws NoSuchStudentException{
 
         return studentService.getStudentById(id);
     }
@@ -43,14 +39,14 @@ public class StudentController {
     // Method to get all students
     @RequestMapping(method = RequestMethod.GET, value = "all")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public List<Student> getAllStudents(){
-        return studentService.getAllStudents();
+    public List<Student> getAllStudents(@RequestParam(value = "page", defaultValue = "0") Integer page ){
+        return studentService.getAllStudents(page);
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public void deleteById(@RequestParam("id") String id) throws NoSuchStudentException{
-        studentService.deleteById(id);
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseEntity<Response<String>> deleteById(@RequestParam("id") String id) throws NoSuchStudentException{
+        return studentService.deleteById(id);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "valid-emails")

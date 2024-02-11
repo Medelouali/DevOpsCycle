@@ -42,7 +42,6 @@ class StudentRepoTest {
 
         // Then
         assertThat(expected).isTrue();
-
     }
 
     @Test
@@ -55,6 +54,5 @@ class StudentRepoTest {
 
         // Then
         assertThat(expected).isFalse();
-
     }
 }
