@@ -5,9 +5,11 @@ import com.ensa.tests.dtos.StudentDto;
 import com.ensa.tests.entities.Student;
 import com.ensa.tests.exceptions.NoSuchStudentException;
 import com.ensa.tests.exceptions.StudentAlreadyExistsException;
+import com.ensa.tests.repos.AccountRepo;
 import com.ensa.tests.repos.StudentRepo;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class StudentService {
     private final StudentRepo studentRepo;
+    @Autowired
+    public StudentService(StudentRepo accountService) {
+        this.studentRepo = accountService;
+    }
 
     // Method to add a student
     public ResponseEntity<Response<Student>> addStudent(StudentDto studentDto) throws StudentAlreadyExistsException {
@@ -63,7 +68,7 @@ public class StudentService {
     public List<Student> getAllStudents(Integer page) {
         // Add any additional logic if needed
         if(page<0) throw new IllegalArgumentException("please check the parameters you are passing");
-        return studentRepo.findAll(PageRequest.of(page, 10)).stream().toList();
+        return studentRepo.findAll(PageRequest.of(page, 10)).toList();
     }
 
     public Boolean doesEmailAlreadyExist(String email) {

@@ -8,6 +8,7 @@ import com.ensa.tests.exceptions.StudentAlreadyExistsException;
 import com.ensa.tests.services.StudentService;
 import lombok.AllArgsConstructor;
 import org.apache.coyote.BadRequestException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +18,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/v1/students")
-@AllArgsConstructor
 public class StudentController {
     private final StudentService studentService;
+    @Autowired
+    public StudentController(StudentService accountService) {
+        this.studentService = accountService;
+    }
 
     // Method to add a student
     @RequestMapping(method = RequestMethod.POST)

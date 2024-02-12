@@ -7,7 +7,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
 @SpringBootTest
-class TestsApplicationTests {
+class TestsApplicationDevOpsCycle {
 	@Test
 	void contextLoads() {
 	}
