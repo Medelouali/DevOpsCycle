@@ -7,22 +7,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@Table(name = "ACCOUNTS")
+@Table(name = "CATEGORIES")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    private double balance;
-    private String rib;
-
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
-    private Collection<Operation> operations=new ArrayList<>();
-
-    @ManyToOne
-    private Client client;
+    private String name;
+    private String description;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="category")
+    private Collection<Product> products=new ArrayList<>();
 }

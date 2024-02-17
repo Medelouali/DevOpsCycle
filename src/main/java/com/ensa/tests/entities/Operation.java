@@ -4,18 +4,17 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table
+@Table(name = "OPERATIONS")
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Student {
+public class Operation {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    private String username;
-    private Integer age;
-    private Boolean isActive;
-    private String email;
+
+    @ManyToOne
+    private Account account;
 }

@@ -1,24 +1,19 @@
 package com.ensa.tests.mappers;
 
 import com.ensa.tests.dtos.StudentDto;
-import com.ensa.tests.entities.Student;
-import org.assertj.core.api.AssertionsForClassTypes;
+import com.ensa.tests.entities.Client;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class StudentMapperTest {
+class ClientMapperTest {
     private final StudentMapper underTest=new StudentMapper();
 
     @BeforeEach
@@ -31,10 +26,10 @@ class StudentMapperTest {
 
     @Test
     void itShouldGetStudentDtoFromStudent() {
-        Student student=Student.builder().age(23).email("Sam@gmail.com").isActive(true).username("Sam").build();
-        assertThat(underTest.getStudentDtoFromStudent(student)).isNotNull();
-        assertThat(underTest.getStudentDtoFromStudent(student)).
-                usingRecursiveComparison().ignoringFields("id").isEqualTo(student);
+        Client client = Client.builder().age(23).email("Sam@gmail.com").isActive(true).username("Sam").build();
+        assertThat(underTest.getStudentDtoFromStudent(client)).isNotNull();
+        assertThat(underTest.getStudentDtoFromStudent(client)).
+                usingRecursiveComparison().ignoringFields("id").isEqualTo(client);
     }
 
     @Test
@@ -47,14 +42,14 @@ class StudentMapperTest {
 
     @Test
     void getStudentDtosFromStudents() {
-        List<Student> studentList=List.of(
-                Student.builder().age(23).email("test1@gmail.com").isActive(true).username("Toto1").build(),
-                Student.builder().age(23).email("test2@gmail.com").isActive(false).username("Toto2").build()
+        List<Client> clientList =List.of(
+                Client.builder().age(23).email("test1@gmail.com").isActive(true).username("Toto1").build(),
+                Client.builder().age(23).email("test2@gmail.com").isActive(false).username("Toto2").build()
         );
 
-        assertThat(underTest.getStudentDtosFromStudents(studentList)).isNotNull();
-        assertThat(underTest.getStudentDtosFromStudents(studentList)).
-                usingRecursiveComparison().ignoringFields("id").isEqualTo(studentList);
+        assertThat(underTest.getStudentDtosFromStudents(clientList)).isNotNull();
+        assertThat(underTest.getStudentDtosFromStudents(clientList)).
+                usingRecursiveComparison().ignoringFields("id").isEqualTo(clientList);
     }
 
     @Test

@@ -1,12 +1,10 @@
 package com.ensa.tests.services;
 
 import com.ensa.tests.dtos.StudentDto;
-import com.ensa.tests.entities.Student;
+import com.ensa.tests.entities.Client;
 import com.ensa.tests.exceptions.NoSuchStudentException;
 import com.ensa.tests.exceptions.StudentAlreadyExistsException;
 import com.ensa.tests.repos.StudentRepo;
-import org.apache.coyote.BadRequestException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,21 +12,18 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class StudentServiceTest {
+class ClientServiceTest {
     @InjectMocks
     private StudentService studentService;
     @Mock
@@ -66,13 +61,13 @@ class StudentServiceTest {
                 .isActive(false).build();
 
         // When
-        Student savedStudent = studentService.addStudent(studentDto).getBody().getData();
+        Client savedClient = studentService.addStudent(studentDto).getBody().getData();
         // Then
-        ArgumentCaptor<Student> studentArgumentCaptor=ArgumentCaptor.forClass(Student.class);
+        ArgumentCaptor<Client> studentArgumentCaptor=ArgumentCaptor.forClass(Client.class);
         verify(studentRepo).saveAndFlush(studentArgumentCaptor.capture());
 
-        Student expectedStudent=studentArgumentCaptor.getValue();
-        assertThat(expectedStudent).isEqualTo(savedStudent);
+        Client expectedClient =studentArgumentCaptor.getValue();
+        assertThat(expectedClient).isEqualTo(savedClient);
     }
 
     @Test
@@ -95,15 +90,15 @@ class StudentServiceTest {
     @Test
     void getStudentById() throws NoSuchStudentException, StudentAlreadyExistsException {
         // Given
-        Student student=Student.builder().username("toto").age(23).email("x@gmail.com").isActive(true).build();
+        Client client = Client.builder().username("toto").age(23).email("x@gmail.com").isActive(true).build();
 
         // When
-        when(studentRepo.findById(any())).thenReturn(Optional.of(student));
+        when(studentRepo.findById(any())).thenReturn(Optional.of(client));
 
         // Then
-        assertThat(studentService.getStudentById(student.getId()).getBody()).isNotNull();
-        assertThat(studentService.getStudentById(student.getId()).getBody().getData()).
-        usingRecursiveComparison().ignoringFields("id").isEqualTo(student);
+        assertThat(studentService.getStudentById(client.getId()).getBody()).isNotNull();
+        assertThat(studentService.getStudentById(client.getId()).getBody().getData()).
+        usingRecursiveComparison().ignoringFields("id").isEqualTo(client);
     }
 
     @Test
@@ -123,7 +118,7 @@ class StudentServiceTest {
     void isShouldDeleteStudentThatDoesExist() throws NoSuchStudentException {
         // Given
         String studentId="832134ab-7549-4fbd-9e72-a8775f07ca9c";
-        when(studentRepo.findById(studentId)).thenReturn(Optional.of(new Student()));
+        when(studentRepo.findById(studentId)).thenReturn(Optional.of(new Client()));
 
         // When
         studentService.deleteById(studentId);

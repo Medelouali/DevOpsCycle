@@ -2,17 +2,12 @@ package com.ensa.tests.services;
 
 import com.ensa.tests.dtos.OperationDto;
 import com.ensa.tests.dtos.Response;
-import com.ensa.tests.dtos.StudentDto;
 import com.ensa.tests.dtos.TransferDto;
 import com.ensa.tests.entities.Account;
-import com.ensa.tests.entities.Student;
 import com.ensa.tests.exceptions.IllegalOperationException;
 import com.ensa.tests.exceptions.NoSuchAccountException;
-import com.ensa.tests.exceptions.NoSuchStudentException;
-import com.ensa.tests.exceptions.StudentAlreadyExistsException;
 import com.ensa.tests.repos.AccountRepo;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -48,7 +43,7 @@ public class AccountService {
         if(accountRepo.findById(accountId).isEmpty())
             throw new NoSuchAccountException("There is no bank account with this id");
         return new ResponseEntity<>(
-                new Response<>("Student has been retrieved successfully",
+                new Response<>("Client has been retrieved successfully",
                         accountRepo.findById(accountId).get()),
                 HttpStatus.OK);
     }
