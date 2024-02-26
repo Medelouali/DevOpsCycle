@@ -13,6 +13,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "GROUPS")
+
 public class Group {
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private String id;

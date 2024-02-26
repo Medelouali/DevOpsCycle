@@ -15,3 +15,7 @@ spring:
     show-sql: true
   application:
     name: TESTS
+
+  data:
+    rest:
+      basePath: /api/v1
